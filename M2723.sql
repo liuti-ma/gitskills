@@ -103,12 +103,12 @@ procedure ws_consult_payment(
            
           select collection_date into  l_date_emise from mw_payment where payment_id = p_payment_id and collection_date is not null; 
          
-          select count(*) into l_count_audit from MW_AUDIT where  FIELD_UPDATED='DBTR_BIC'  AND ACTION=3 and mandate_id=l_mandate_id AND ACTION_DATE > l_date_emise;
+          select count(*) into l_count_audit from MW_AUDIT where  FIELD_UPDATED='DBTR_BIC'  AND ACTION=3 and mandate_id=l_mandate_id AND ACTION_DATE > l_date_emise and rownum = 1;
           if l_count_audit > 0 then
             l_bic_change := true;
              
           else 
-            select count(*) into l_count_audit from MW_AUDIT where  FIELD_UPDATED='DBTR_IBAN'  AND ACTION=3 and mandate_id=l_mandate_id AND ACTION_DATE > l_date_emise;	
+            select count(*) into l_count_audit from MW_AUDIT where  FIELD_UPDATED='DBTR_IBAN'  AND ACTION=3 and mandate_id=l_mandate_id AND ACTION_DATE > l_date_emise and rownum = 1;	
             if l_count_audit > 0 then
               l_iban_change := true;
               
@@ -130,8 +130,8 @@ procedure ws_consult_payment(
            ) where rownum=1;
               else
            
-              select m.dbtr_bic into l_bic from mw_mandate m where m.mandate_id=l_mandate_id;
-              select m.dbtr_iban into l_iban from mw_mandate m where m.mandate_id=l_mandate_id;
+              select m.dbtr_bic,m.dbtr_iban into l_bic,l_iban from mw_mandate m where m.mandate_id=l_mandate_id;
+            
           
           end if;
            
