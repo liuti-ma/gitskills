@@ -1,1 +1,4 @@
-ssss
+ssssssss
+test clean
+
+teste amend
